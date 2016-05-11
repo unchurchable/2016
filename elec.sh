@@ -4,8 +4,8 @@
 # as of May 7, 2016
 
 # Pledged Delegates Won
-BS_PL_TOT=1419
-HC_PL_TOT=1706
+BS_PL_TOT=1437
+HC_PL_TOT=1717
 PL_WON_TOT=$(calc -p "$BS_PL_TOT"+"$HC_PL_TOT")
 
 # Unpledged Delegates "Won"
@@ -41,24 +41,23 @@ HC_GOAL=""
 echo "2016 PRESIDENTIAL PRIMARY ELECTION DELEGATE COUNT AND PREDICTIONS
 
 =================================================================================================
- AS OF MAY 9, 2016	| BERNIE SANDERS	| \$HILLARY CLINTON	| TOTAL	| REMAINING	|
+ AS OF MAY 10, 2016	| BERNIE SANDERS	| \$HILLARY CLINTON	| TOTAL	| REMAINING	|
 ------------------------|-----------------------|-----------------------|-------|---------------|
- PLEDGED DELEGATES      | 1419		35.03%	| 1706		42.11%	| 3125	| 926	22.86%	|
+ PLEDGED DELEGATES      | 1437		35.47%	| 1717		42.38%	| 3154	| 897	22.14%	|
  UNPLEDGED DELEGATES    | 41		5.74%	| 503		70.45%	| 544	| 170	23.81%	|
 ------------------------|-----------------------|-----------------------|-----------------------|
- CONTESTED CONVENTION   | 566 - 61.12% PLEDGED	| 269 - 30.13% PLEDGED	|
- MAJORITY VOTE          | 607 - 65.55% PLEDGED	| 320 - 34.56% PLEDGED	|
- NOMINATION             | 964 - 38+ UNPLEDGED	| 667 - 73.11% PLEDGED	|
+ CONTESTED CONVENTION   | 548 - 61.1% PLEDGED	| 268 - 29.88% PLEDGED	|
+ MAJORITY VOTE          | 589 - 65.66% PLEDGED	| 309 - 34.45% PLEDGED	|
+ NOMINATION             | 946 - 49+ UNPLEDGED	| 666 - 74.25% PLEDGED	|
 =========================================================================
 "
 
 # Remaining Primaries
-STATES='WV KY OR VI PR CA MT NJ NM ND SD DC'
+STATES='KY OR VI PR CA MT NJ NM ND SD DC'
 for ST in $STATES
 do
     # State pledged delegate counts, primary dates, and voting %
     # Adjust BS_VT to calculate different possible outcomes
-    [ "$ST" == "WV" ] && EL_DAY="MAY 10, TUESDAY"  && ST_PL=29  && ST_UNPL=8  && BS_VT=65
     [ "$ST" == "KY" ] && EL_DAY="MAY 17, TUESDAY"  && ST_PL=55  && ST_UNPL=5  && BS_VT=57
     [ "$ST" == "OR" ] && EL_DAY="MAY 17, TUESDAY"  && ST_PL=61  && ST_UNPL=13 && BS_VT=77
     [ "$ST" == "VI" ] && EL_DAY="JUNE 4, SATURDAY" && ST_PL=7   && ST_UNPL=5  && BS_VT=40
