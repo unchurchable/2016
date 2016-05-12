@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # http://www.thegreenpapers.com/P16/D-PU.phtml
-# as of May 7, 2016
+# as of May 11, 2016
 
 # Pledged Delegates Won
 BS_PL_TOT=1437
@@ -49,10 +49,10 @@ fi
 echo "2016 PRESIDENTIAL PRIMARY ELECTION DELEGATE COUNT AND PREDICTIONS
 
 =================================================================================================
- AS OF MAY 10, 2016	| BERNIE SANDERS	| \$HILLARY CLINTON	| TOTAL	| REMAINING	|
+ AS OF MAY 11, 2016	| BERNIE SANDERS	| \$HILLARY CLINTON	| TOTAL	| REMAINING	|
 ------------------------|-----------------------|-----------------------|-------|---------------|
  PLEDGED DELEGATES      | 1437		35.47%	| 1717		42.38%	| 3154	| 897	22.14%	|
- UNPLEDGED DELEGATES    | 41		5.74%	| 503		70.45%	| 544	| 170	23.81%	|
+ UNPLEDGED DELEGATES    | 41		5.74%	| 503		70.45%	| 544	| 169	23.67%	|
 ------------------------|-----------------------|-----------------------|-----------------------|
  CONTESTED CONVENTION   | 548 - 61.1% PLEDGED	| 268 - 29.88% PLEDGED	|
  MAJORITY VOTE          | 589 - 65.66% PLEDGED	| 309 - 34.45% PLEDGED	|
@@ -66,47 +66,41 @@ for ST in $STATES
 do
     # State pledged delegate counts, primary dates, and voting %
     # Adjust BS_VT to calculate different possible outcomes
-    [ "$ST" == "KY" ] && EL_DAY="MAY 17, TUESDAY"  && ST_PL=55  && ST_UNPL=5  && BS_VT=57
-    [ "$ST" == "OR" ] && EL_DAY="MAY 17, TUESDAY"  && ST_PL=61  && ST_UNPL=13 && BS_VT=77
-    [ "$ST" == "VI" ] && EL_DAY="JUNE 4, SATURDAY" && ST_PL=7   && ST_UNPL=5  && BS_VT=40
-    [ "$ST" == "PR" ] && EL_DAY="JUNE 5, SUNDAY"   && ST_PL=60  && ST_UNPL=7  && BS_VT=48
-    [ "$ST" == "CA" ] && EL_DAY="JUNE 7, TUESDAY"  && ST_PL=475 && ST_UNPL=73 && BS_VT=63
-    [ "$ST" == "MT" ] && EL_DAY="JUNE 7, TUESDAY"  && ST_PL=21  && ST_UNPL=6  && BS_VT=68
-    [ "$ST" == "NJ" ] && EL_DAY="JUNE 7, TUESDAY"  && ST_PL=126 && ST_UNPL=16 && BS_VT=58
-    [ "$ST" == "NM" ] && EL_DAY="JUNE 7, TUESDAY"  && ST_PL=34  && ST_UNPL=9  && BS_VT=62
-    [ "$ST" == "ND" ] && EL_DAY="JUNE 7, TUESDAY"  && ST_PL=18  && ST_UNPL=5  && BS_VT=62
-    [ "$ST" == "SD" ] && EL_DAY="JUNE 7, TUESDAY"  && ST_PL=20  && ST_UNPL=5  && BS_VT=62
-    [ "$ST" == "DC" ] && EL_DAY="JUNE 14, TUESDAY" && ST_PL=20  && ST_UNPL=26 && BS_VT=44
+    [ "$ST" == "KY" ] && EL_DAY="MAY 17, TUESDAY"  && ST_PL=55  && BS_VT=57
+    [ "$ST" == "OR" ] && EL_DAY="MAY 17, TUESDAY"  && ST_PL=61  && BS_VT=77
+    [ "$ST" == "VI" ] && EL_DAY="JUNE 4, SATURDAY" && ST_PL=7   && BS_VT=40
+    [ "$ST" == "PR" ] && EL_DAY="JUNE 5, SUNDAY"   && ST_PL=60  && BS_VT=48
+    [ "$ST" == "CA" ] && EL_DAY="JUNE 7, TUESDAY"  && ST_PL=475 && BS_VT=63
+    [ "$ST" == "MT" ] && EL_DAY="JUNE 7, TUESDAY"  && ST_PL=21  && BS_VT=68
+    [ "$ST" == "NJ" ] && EL_DAY="JUNE 7, TUESDAY"  && ST_PL=126 && BS_VT=58
+    [ "$ST" == "NM" ] && EL_DAY="JUNE 7, TUESDAY"  && ST_PL=34  && BS_VT=62
+    [ "$ST" == "ND" ] && EL_DAY="JUNE 7, TUESDAY"  && ST_PL=18  && BS_VT=62
+    [ "$ST" == "SD" ] && EL_DAY="JUNE 7, TUESDAY"  && ST_PL=20  && BS_VT=62
+    [ "$ST" == "DC" ] && EL_DAY="JUNE 14, TUESDAY" && ST_PL=20  && BS_VT=44
 
     # Clinton voting %
     HC_VT=$(calc -p 100-"$BS_VT")
 
     # Total Delegates Won
     PL_WON_TOT=$(calc -p "$PL_WON_TOT"+"$ST_PL")
-    #UNPL_WON_TOT=$(calc -p "$UNPL_WON_TOT"+"$ST_UNPL"
     DEL_WON_TOT=$(calc -p "$DEL_WON_TOT"+"$ST_PL")
 
     # Determine Delegate Totals
     BS_PL_WON=$(calc -p "round("$ST_PL"*0."$BS_VT",0)")
     BS_PL_TOT=$(calc -p "$BS_PL_TOT"+"$BS_PL_WON")
     BS_PL_PCT=$(calc -p "round("$BS_PL_TOT"/"$PL_TOT"*100,2)")
-    #BS_UNPL_WON=$(calc -p "round("$ST_UNPL"*0."$BS_VT",0)")
-    #BS_UNPL_TOT=$(calc -p "$BS_UNPL_TOT"+"$BS_UNPL_WON")
     BS_UNPL_PCT=$(calc -p "round("$BS_UNPL_TOT"/"$UNPL_TOT"*100,2)")
     BS_DEL_TOT=$(calc -p "$BS_DEL_TOT"+"$BS_PL_WON")
 
     HC_PL_WON=$(calc -p "$ST_PL"-"$BS_PL_WON")
     HC_PL_TOT=$(calc -p "$HC_PL_WON"+"$HC_PL_TOT")
     HC_PL_PCT=$(calc -p "round("$HC_PL_TOT"/"$PL_TOT"*100,2)")
-    #HC_UNPL_WON=$(calc -p "$ST_UNPL"-"$BS_UNPL_WON")
-    #HC_UNPL_TOT=$(calc -p "$HC_UNPL_TOT"+"$HC_UNPL_WON")
     HC_UNPL_PCT=$(calc -p "round("$HC_UNPL_TOT"/"$UNPL_TOT"*100,2)")
     HC_DEL_TOT=$(calc -p "$HC_DEL_TOT"+"$HC_PL_WON")
 
     # Total Delegates Remaining
     PL_REM=$(calc -p "$PL_REM"-"$ST_PL")
     PL_REM_PCT=$(calc -p "round("$PL_REM"/"$PL_TOT"*100,2)")
-    #UNPL_REM=$(calc -p "$UNPL_REM"-"$ST_UNPL")
     UNPL_REM_PCT=$(calc -p "round("$UNPL_REM"/"$UNPL_TOT"*100,2)")
     DEL_REM=$(calc -p "$DEL_REM"-"$ST_PL")
     DEL_REM_PCT=$(calc -p "round("$DEL_WON_TOT"/"$DEL_TOT"*100,2)")
