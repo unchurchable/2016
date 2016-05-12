@@ -10,7 +10,7 @@ PL_WON_TOT=$(calc -p "$BS_PL_TOT"+"$HC_PL_TOT")
 
 # Unpledged Delegates "Won"
 BS_UNPL_TOT=41
-HC_UNPL_TOT=503
+HC_UNPL_TOT=502
 UNPL_WON_TOT=$(calc -p "$BS_UNPL_TOT"+"$HC_UNPL_TOT"+1) # O'Malley has 1 for some reason
 
 # Combined Delegates Won
@@ -48,12 +48,14 @@ fi
 # Current totals
 echo "2016 PRESIDENTIAL PRIMARY ELECTION DELEGATE COUNT AND PREDICTIONS
 
-=================================================================================================
- AS OF MAY 11, 2016	| BERNIE SANDERS	| \$HILLARY CLINTON	| TOTAL	| REMAINING	|
-------------------------|-----------------------|-----------------------|-------|---------------|
- PLEDGED DELEGATES      | 1437		35.47%	| 1717		42.38%	| 3154	| 897	22.14%	|
- UNPLEDGED DELEGATES    | 41		5.74%	| 503		70.45%	| 544	| 169	23.67%	|
-------------------------|-----------------------|-----------------------|-----------------------|
+=========================================================================================
+ AS OF MAY 11, 2016	| BERNIE SANDERS	| \$HILLARY CLINTON	| REMAINING	|
+------------------------|-----------------------|-----------------------|---------------|
+ PLEDGED DELEGATES      | 1437		35.47%	| 1717		42.38%	| 897	22.14%	|
+ UNPLEDGED DELEGATES    | 41		5.74%	| 502		70.31%	| 170	23.67%	|
+------------------------|-----------------------|-----------------------|---------------|
+ TOTALS                 | 1478		31.02%	| 2219		46.57%	| 1067	22.39%	|
+========================|=======================|=======================|================
  CONTESTED CONVENTION   | 548 - 61.1% PLEDGED	| 268 - 29.88% PLEDGED	|
  MAJORITY VOTE          | 589 - 65.66% PLEDGED	| 309 - 34.45% PLEDGED	|
  NOMINATION             | 946 - 49+ UNPLEDGED	| 666 - 74.25% PLEDGED	|
