@@ -91,28 +91,32 @@ do
     BS_PL_PCT=$(calc -p "round("$BS_PL_TOT"/"$PL_TOT"*100,2)")
     BS_UNPL_PCT=$(calc -p "round("$BS_UNPL_TOT"/"$UNPL_TOT"*100,2)")
     BS_DEL_TOT=$(calc -p "$BS_DEL_TOT"+"$BS_PL_WON")
+    BS_DEL_PCT=$(calc -p "round("$BS_DEL_TOT"/"$DEL_TOT"*100,2)")
 
     HC_PL_WON=$(calc -p "$ST_PL"-"$BS_PL_WON")
     HC_PL_TOT=$(calc -p "$HC_PL_WON"+"$HC_PL_TOT")
     HC_PL_PCT=$(calc -p "round("$HC_PL_TOT"/"$PL_TOT"*100,2)")
     HC_UNPL_PCT=$(calc -p "round("$HC_UNPL_TOT"/"$UNPL_TOT"*100,2)")
     HC_DEL_TOT=$(calc -p "$HC_DEL_TOT"+"$HC_PL_WON")
+    HC_DEL_PCT=$(calc -p "round("$HC_DEL_TOT"/"$DEL_TOT"*100,2)")
 
     # Total Delegates Remaining
     PL_REM=$(calc -p "$PL_REM"-"$ST_PL")
     PL_REM_PCT=$(calc -p "round("$PL_REM"/"$PL_TOT"*100,2)")
     UNPL_REM_PCT=$(calc -p "round("$UNPL_REM"/"$UNPL_TOT"*100,2)")
     DEL_REM=$(calc -p "$DEL_REM"-"$ST_PL")
-    DEL_REM_PCT=$(calc -p "round("$DEL_WON_TOT"/"$DEL_TOT"*100,2)")
+    DEL_REM_PCT=$(calc -p "round("$DEL_REM"/"$DEL_TOT"*100,2)")
 
-    echo "================================================================================================="
-    echo " $ST : $EL_DAY	| BERNIE SANDERS	| \$HILLARY CLINTON	| TOTAL	| REMAINING	|"
-    echo "------------------------|-----------------------|-----------------------|-------|---------------|"
-    echo " DELEGATES WON          | $BS_PL_WON		$BS_VT%	| $HC_PL_WON		$HC_VT%	| $ST_PL	|		|"
-    echo "------------------------|-----------------------|-----------------------|-------|---------------|"
-    echo " PLEDGED DELEGATES      | $BS_PL_TOT		$BS_PL_PCT%	| $HC_PL_TOT		$HC_PL_PCT%	| $PL_WON_TOT	| $PL_REM	$PL_REM_PCT%	|"
-    echo " UNPLEDGED DELEGATES    | $BS_UNPL_TOT            $BS_UNPL_PCT%   | $HC_UNPL_TOT           $HC_UNPL_PCT%  | $UNPL_WON_TOT   | $UNPL_REM   $UNPL_REM_PCT%  |"
-    echo "------------------------|-----------------------|-----------------------|-----------------------|"
+    echo "========================================================================================="
+    echo " $ST : $EL_DAY	| BERNIE SANDERS	| \$HILLARY CLINTON	| REMAINING	|"
+    echo "------------------------|-----------------------|-----------------------|---------------|"
+    echo " PLEDGES ($ST_PL TOTAL)	| $BS_PL_WON		$BS_VT%	| $HC_PL_WON		$HC_VT%	|		|"
+    echo "------------------------|-----------------------|-----------------------|---------------|"
+    echo " PLEDGED DELEGATES      | $BS_PL_TOT		$BS_PL_PCT%	| $HC_PL_TOT		$HC_PL_PCT%	| $PL_REM	$PL_REM_PCT%	|"
+    echo " UNPLEDGED DELEGATES    | $BS_UNPL_TOT            $BS_UNPL_PCT%   | $HC_UNPL_TOT           $HC_UNPL_PCT%  | $UNPL_REM   $UNPL_REM_PCT%  |"
+    echo "------------------------|-----------------------|-----------------------|---------------|"
+    echo " TOTALS                 | $BS_DEL_TOT		$BS_DEL_PCT%	| $HC_DEL_TOT		$HC_DEL_PCT%	| $DEL_REM	$DEL_REM_PCT%	|"
+    echo "========================|=======================|=======================|================"
 
     # determine probability of brokered convention, majority, or nomination
     for XP in $GOALS
