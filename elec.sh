@@ -37,6 +37,14 @@ NOM=2383 # 50%+ Total Delegates
 BS_GOAL=""
 HC_GOAL=""
 
+# Include unpledged total and only check possibility for nomination?
+if [ "$1" != "" ]; then # any args
+    UNPL_HARD=true
+    GOALS="$NOM"
+else
+    GOALS="$C_C $MAJ $NOM"
+fi
+
 # Current totals
 echo "2016 PRESIDENTIAL PRIMARY ELECTION DELEGATE COUNT AND PREDICTIONS
 
@@ -85,7 +93,7 @@ do
     #BS_UNPL_WON=$(calc -p "round("$ST_UNPL"*0."$BS_VT",0)")
     #BS_UNPL_TOT=$(calc -p "$BS_UNPL_TOT"+"$BS_UNPL_WON")
     BS_UNPL_PCT=$(calc -p "round("$BS_UNPL_TOT"/"$UNPL_TOT"*100,2)")
-    BS_DEL_TOT=$(calc -p "$BS_PL_TOT"+"$BS_UNPL_TOT")
+    BS_DEL_TOT=$(calc -p "$BS_DEL_TOT"+"$BS_PL_WON")
 
     HC_PL_WON=$(calc -p "$ST_PL"-"$BS_PL_WON")
     HC_PL_TOT=$(calc -p "$HC_PL_WON"+"$HC_PL_TOT")
@@ -93,7 +101,7 @@ do
     #HC_UNPL_WON=$(calc -p "$ST_UNPL"-"$BS_UNPL_WON")
     #HC_UNPL_TOT=$(calc -p "$HC_UNPL_TOT"+"$HC_UNPL_WON")
     HC_UNPL_PCT=$(calc -p "round("$HC_UNPL_TOT"/"$UNPL_TOT"*100,2)")
-    HC_DEL_TOT=$(calc -p "$HC_PL_TOT"+"$HC_UNPL_TOT")
+    HC_DEL_TOT=$(calc -p "$HC_DEL_TOT"+"$HC_PL_WON")
 
     # Total Delegates Remaining
     PL_REM=$(calc -p "$PL_REM"-"$ST_PL")
@@ -113,10 +121,10 @@ do
     echo "------------------------|-----------------------|-----------------------|-----------------------|"
 
     # determine probability of brokered convention, majority, or nomination
-    for XP in "$C_C" "$MAJ" "$NOM"
+    for XP in $GOALS
     do
         [ "$XP" == 1985 ] && GOAL=" CONTESTED CONVENTION   |"
-        [ "$XP" == 2026 ] && GOAL=" MAJORITY VOTE          |"
+        [ "$XP" == 2026 ] && GOAL=" MAJORITY PLEDGED VOTES |"
         [ "$XP" == 2383 ] && GOAL=" NOMINATION             |"
 
         for C in 'BS' 'HC'
@@ -124,7 +132,7 @@ do
             [ "$C" == "BS" ] && C_PL_TOT="$BS_PL_TOT" && C_DEL_TOT="$BS_DEL_TOT"
             [ "$C" == "HC" ] && C_PL_TOT="$HC_PL_TOT" && C_DEL_TOT="$HC_DEL_TOT"
 
-            if [ "$1" == "" ]; then
+            if [ ! "$UNPL_HARD" ]; then
                 # assumes every unpledged can be flipped
                 PL_REQ=$(calc -p "$XP"-"$C_PL_TOT")
                 DEL_MAX=$(calc -p "$C_PL_TOT"+"$PL_REM"+"$UNPL_TOT")
@@ -133,17 +141,19 @@ do
                     C_GOAL="ACHIEVED		|"
                 elif [ "$DEL_MAX" -lt "$XP" ]; then
                     C_GOAL="IMPOSSIBLE		|"
-                elif [ "$PL_REQ" -gt "$PL_REM" ]; then
-                    UNPL_MIN=$(calc -p "$PL_REQ"-"$PL_REM")
-                    C_GOAL="$PL_REQ - $UNPL_MIN+ UNPLEDGED	|"
+                elif [ "$PL_REQ" -ge "$PL_REM" ]; then
+                    if [ "$XP" == "$NOM" ]; then
+                        UNPL_MIN=$(calc -p "$PL_REQ"-"$PL_REM")
+                        C_GOAL="$PL_REQ - $UNPL_MIN+ UNPLEDGED	|"
+                    else
+                        C_GOAL="IMPOSSIBLE		|"
+                    fi
                 else
                     PCT_REQ=$(calc -p "round("$PL_REQ"/"$PL_REM"*100,2)")
                     C_GOAL="$PL_REQ - $PCT_REQ% PLEDGED	|"
                 fi
             else
-                # include unpledged counts
-                [ "$XP" == 1985 ] && XP=2335
-                [ "$XP" == 2026 ] && XP=2383
+                # include unpledged counts, only calculate possibility for nomination
                 PL_REQ=$(calc -p "$XP"-"$C_PL_TOT")
                 DEL_MAX=$(calc -p "$C_DEL_TOT"+"$DEL_REM")
 
@@ -166,7 +176,7 @@ do
         done
 
         echo "$GOAL $BS_GOAL $HC_GOAL"
-        
+
         # Reset Goals
         BS_GOAL=""
         HC_GOAL=""
