@@ -11,7 +11,7 @@ PL_WON_TOT=$(calc -p "$BS_PL_TOT"+"$HC_PL_TOT")
 # Unpledged Delegates "Won"
 BS_UNPL_TOT=41
 HC_UNPL_TOT=503
-UNPL_WON_TOT=$(calc -p "$BS_UNPL_TOT"+"$HC_UNPL_TOT")
+UNPL_WON_TOT=$(calc -p "$BS_UNPL_TOT"+"$HC_UNPL_TOT"+1) # O'Malley has 1 for some reason
 
 # Combined Delegates Won
 BS_DEL_TOT=$(calc -p "$BS_PL_TOT"+"$BS_UNPL_TOT")
