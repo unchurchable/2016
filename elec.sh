@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # http://www.thegreenpapers.com/P16/D-PU.phtml
-# as of May 11, 2016
 
 # Pledged Delegates Won
 BS_PL_TOT=1437
@@ -10,7 +9,7 @@ PL_WON_TOT=$(( $BS_PL_TOT + $HC_PL_TOT ))
 
 # Unpledged Delegates "Won"
 BS_UNPL_TOT=41
-HC_UNPL_TOT=502
+HC_UNPL_TOT=505
 UNPL_WON_TOT=$(( $BS_UNPL_TOT + $HC_UNPL_TOT + 1 )) # O'Malley has 1 for some reason
 
 # Combined Delegates Won
@@ -50,19 +49,23 @@ precision_percent() {
 
 # Current totals
 echo "2016 PRESIDENTIAL PRIMARY ELECTION DELEGATE COUNT AND PREDICTIONS
+=================================================================
 
+ CURRENT DELEGATE COUNT :
 =========================================================================================
- AS OF MAY 11, 2016	| BERNIE SANDERS	| \$HILLARY CLINTON	| REMAINING	|
+ AS OF MAY 14, 2016	| BERNIE SANDERS	| \$HILLARY CLINTON	| REMAINING	|
 ------------------------|-----------------------|-----------------------|---------------|
  PLEDGED DELEGATES      | 1437		35.47%	| 1717		42.38%	| 897	22.14%	|
- UNPLEDGED DELEGATES    | 41		5.74%	| 502		70.31%	| 170	23.67%	|
+ UNPLEDGED DELEGATES    | 41		5.74%	| 505		70.73%	| 167	23.39%	|
 ------------------------|-----------------------|-----------------------|---------------|
- TOTALS                 | 1478		31.02%	| 2219		46.57%	| 1067	22.39%	|
+ TOTALS                 | 1478		31.02%	| 2222		46.63%	| 1064	22.33%	|
 ========================|=======================|=======================|================
  CONTESTED CONVENTION   | 548 - 61.1% PLEDGED	| 268 - 29.88% PLEDGED	|
  MAJORITY VOTE          | 589 - 65.66% PLEDGED	| 309 - 34.45% PLEDGED	|
  NOMINATION             | 946 - 49+ UNPLEDGED	| 666 - 74.25% PLEDGED	|
 =========================================================================
+
+ FUTURE PRIMARIES DELEGATE CALCULATIONS :
 "
 
 # Remaining Primaries
