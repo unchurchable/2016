@@ -26,14 +26,14 @@ UNPL_TOT=714 # Unpledged (THESE DON'T REALLY COUNT YET)
 PL_REM=$(( $PL_TOT - $PL_WON_TOT ))
 UNPL_REM=$(( $UNPL_TOT - $UNPL_WON_TOT ))
 DEL_REM=$(( $PL_REM + $UNPL_REM ))
+# Current Pledges Remaining
+CUR_PL_REM="$PL_REM"
 
 # Delegate Goals
 C_C=1985 # 49%+ Pledged
 MAJ=2026 # 50%+ Pledged
 NOM=2383 # 50%+ Total Delegates
-
-# Include unpledged total and only check possibility for nomination?
-[ "$1" == "" ] && GOALS=($C_C $MAJ $NOM) || GOALS=$NOM
+GOALS=($C_C $MAJ $NOM)
 
 # All Goals are unmet by default
 BS_GOAL=""
@@ -61,15 +61,15 @@ echo "2016 PRESIDENTIAL PRIMARY ELECTION DELEGATE COUNT AND PREDICTIONS
  TOTALS                 | 1478		31.02%	| 2222		46.63%	| 1064	22.33%	|
 ========================|=======================|=======================|================
  CONTESTED CONVENTION   | 548 - 61.1% PLEDGED	| 268 - 29.88% PLEDGED	|
- MAJORITY VOTE          | 589 - 65.66% PLEDGED	| 309 - 34.45% PLEDGED	|
+ MAJORITY PLEDGED VOTES | 589 - 65.66% PLEDGED	| 309 - 34.45% PLEDGED	|
  NOMINATION             | 946 - 49+ UNPLEDGED	| 666 - 74.25% PLEDGED	|
 =========================================================================
-
- FUTURE PRIMARIES DELEGATE CALCULATIONS :
 "
 
 # Remaining Primaries
 STATES=(KY OR VI PR CA MT NJ NM ND SD DC)
+echo "${#STATES[@]} REMAINING PRIMARIES :
+"
 for ST in ${STATES[@]}
 do
     # State pledged delegate counts, primary dates, and voting %
@@ -85,6 +85,9 @@ do
     [ "$ST" == "ND" ] && EL_DAY="JUNE 7, TUESDAY"  && ST_PL=18  && BS_VT=62
     [ "$ST" == "SD" ] && EL_DAY="JUNE 7, TUESDAY"  && ST_PL=20  && BS_VT=62
     [ "$ST" == "DC" ] && EL_DAY="JUNE 14, TUESDAY" && ST_PL=20  && BS_VT=44
+
+    # % of remaining delegates (current $PL_REM total)
+    ST_PL_PCT=$(precision_percent "$ST_PL" "$CUR_PL_REM")
 
     # Clinton voting %
     HC_VT=$(( 100 - $BS_VT ))
@@ -115,16 +118,16 @@ do
     DEL_REM=$(( $DEL_REM - $ST_PL ))
     DEL_REM_PCT=$(precision_percent "$DEL_REM" "$DEL_TOT")
 
-    echo "========================================================================================="
-    echo " $ST : $EL_DAY	| BERNIE SANDERS	| \$HILLARY CLINTON	| REMAINING	|"
-    echo "------------------------|-----------------------|-----------------------|---------------|"
-    echo " PLEDGES ($ST_PL TOTAL)	| $BS_PL_WON		$BS_VT%	| $HC_PL_WON		$HC_VT%	|		|"
-    echo "------------------------|-----------------------|-----------------------|---------------|"
-    echo " PLEDGED DELEGATES      | $BS_PL_TOT		$BS_PL_PCT%	| $HC_PL_TOT		$HC_PL_PCT%	| $PL_REM	$PL_REM_PCT%	|"
-    echo " UNPLEDGED DELEGATES    | $BS_UNPL_TOT            $BS_UNPL_PCT%   | $HC_UNPL_TOT           $HC_UNPL_PCT%  | $UNPL_REM   $UNPL_REM_PCT%  |"
-    echo "------------------------|-----------------------|-----------------------|---------------|"
-    echo " TOTALS                 | $BS_DEL_TOT		$BS_DEL_PCT%	| $HC_DEL_TOT		$HC_DEL_PCT%	| $DEL_REM	$DEL_REM_PCT%	|"
-    echo "========================|=======================|=======================|================"
+    echo "=========================================================================================
+ $ST : $EL_DAY	| BERNIE SANDERS	| \$HILLARY CLINTON	| REMAINING	|
+------------------------|-----------------------|-----------------------|---------------|
+ PLEDGES ($ST_PL | $ST_PL_PCT%)	| $BS_PL_WON		$BS_VT%	| $HC_PL_WON		$HC_VT%	|		|
+------------------------|-----------------------|-----------------------|---------------|
+ PLEDGED DELEGATES      | $BS_PL_TOT		$BS_PL_PCT%	| $HC_PL_TOT		$HC_PL_PCT%	| $PL_REM	$PL_REM_PCT%	|
+ UNPLEDGED DELEGATES    | $BS_UNPL_TOT            $BS_UNPL_PCT%   | $HC_UNPL_TOT           $HC_UNPL_PCT%  | $UNPL_REM   $UNPL_REM_PCT%  |
+------------------------|-----------------------|-----------------------|---------------|
+ TOTALS                 | $BS_DEL_TOT		$BS_DEL_PCT%	| $HC_DEL_TOT		$HC_DEL_PCT%	| $DEL_REM	$DEL_REM_PCT%	|
+========================|=======================|=======================|================"
 
     # determine probability of brokered convention, majority, or nomination
     for XP in ${GOALS[@]}
@@ -135,46 +138,26 @@ do
 
         for C in 'BS' 'HC'
         do
-            [ "$C" == "BS" ] && C_PL_TOT="$BS_PL_TOT" && C_DEL_TOT="$BS_DEL_TOT"
-            [ "$C" == "HC" ] && C_PL_TOT="$HC_PL_TOT" && C_DEL_TOT="$HC_DEL_TOT"
+            [ "$C" == "BS" ] && C_PL_TOT="$BS_PL_TOT"
+            [ "$C" == "HC" ] && C_PL_TOT="$HC_PL_TOT"
 
-            if [ ${#GOALS[@]} == 3 ]; then
-                # assumes every unpledged can be flipped
-                PL_REQ=$(( $XP - $C_PL_TOT ))
-                DEL_MAX=$(( $C_PL_TOT + $PL_REM + $UNPL_TOT ))
+            # assume all unpledged delegates can be flipped, because
+            # neither candidate will win the nomination without them
+            PL_REQ=$(( $XP - $C_PL_TOT ))
+            DEL_MAX=$(( $C_PL_TOT + $PL_REM + $UNPL_TOT ))
 
-                if [ "$C_PL_TOT" -ge "$XP" ]; then
-                    C_GOAL="ACHIEVED		|"
-                elif [ "$DEL_MAX" -lt "$XP" ]; then
-                    C_GOAL="IMPOSSIBLE		|"
-                elif [ "$PL_REQ" -ge "$PL_REM" ]; then
-                    if [ "$XP" == "$NOM" ]; then
-                        UNPL_MIN=$(( $PL_REQ - $PL_REM ))
-                        C_GOAL="$PL_REQ - $UNPL_MIN+ UNPLEDGED	|"
-                    else
-                        C_GOAL="IMPOSSIBLE		|"
-                    fi
+            if [ "$C_PL_TOT" -ge "$XP" ]; then
+                C_GOAL="ACHIEVED		|"
+            elif [ "$PL_REQ" -ge "$PL_REM" ]; then
+                if [ "$XP" == "$NOM" ] && [ "$DEL_MAX" -ge "$XP" ]; then
+                    UNPL_MIN=$(( $PL_REQ - $PL_REM ))
+                    C_GOAL="$PL_REQ - $UNPL_MIN+ UNPLEDGED	|"
                 else
-                    PCT_REQ=$(precision_percent "$PL_REQ" "$PL_REM")
-                    C_GOAL="$PL_REQ - $PCT_REQ% PLEDGED	|"
+                    C_GOAL="IMPOSSIBLE		|"
                 fi
             else
-                # include unpledged counts, only calculate possibility for nomination
-                PL_REQ=$(( $XP - $C_PL_TOT ))
-                DEL_MAX=$(( $C_DEL_TOT + $DEL_REM ))
-
-                if [ "$C_DEL_TOT" -ge "$XP" ]; then
-                    C_GOAL="ACHIEVED		|"
-                elif [ "$DEL_MAX" -lt "$XP" ]; then
-                    C_GOAL="IMPOSSIBLE		|"
-                elif [ "$PL_REQ" -gt "$PL_REM" ]; then
-                    DEL_MIN=$(( $XP - $C_DEL_TOT ))
-                    UNPL_MIN=$(( $PL_REQ - $PL_REM ))
-                    C_GOAL="$DEL_MIN - $UNPL_MIN+ UNPLEDGED	|"
-                else
-                    PCT_REQ=$(precision_percent "$PL_REQ" "$PL_REM")
-                    C_GOAL="$PL_REQ - $PCT_REQ% PLEDGED	|"
-                fi
+                PCT_REQ=$(precision_percent "$PL_REQ" "$PL_REM")
+                C_GOAL="$PL_REQ - $PCT_REQ% PLEDGED	|"
             fi
 
             [ "$C" == "BS" ] && BS_GOAL="$C_GOAL"
@@ -188,7 +171,7 @@ do
         HC_GOAL=""
     done
 
-    echo "========================================================================="
-    echo
+    echo "=========================================================================
+"
 done
- 
+
